@@ -1,9 +1,13 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useState } from "react";
+import Image from "next/image";
 
 export default function Header() {
   const router = useRouter();
   const currentPath = router.pathname;
+
+  const [login, setLogin] = useState(false);
 
   const isActive = (path: string) => {
     return currentPath === path ? "font-semibold text-gray-900" : "text-gray-600 hover:text-gray-900";
@@ -18,8 +22,8 @@ export default function Header() {
                 Blog
               </Link>
             </div>
-            <div className="hidden md:block">
-              <div className="ml-10 flex items-baseline space-x-4">
+            <div className="hidden md:flex items-center space-x-4">
+              <div className="flex items-baseline space-x-4">
                 <Link href="/" className={`${isActive('/')} px-3 py-2 rounded-md transition-colors duration-200`}>
                   Ana Sayfa
                 </Link>
@@ -30,6 +34,26 @@ export default function Header() {
                   Hakkımda
                 </Link>
               </div>
+              {login ? (
+                <Link href="/profil" className="flex items-center pl-4">
+                  <button onClick={() => setLogin(false)} className="flex items-center space-x-2 group">
+                    <div className="w-8 h-8 rounded-full overflow-hidden">
+                      <Image
+                        src="https://avatars.githubusercontent.com/u/1?v=4"
+                        alt="Kullanıcı avatarı"
+                        width={32}
+                        height={32}
+                        className="object-cover"
+                      />
+                    </div>
+                    <span className="text-sm text-gray-700 group-hover:text-gray-900">Kullanıcı Adı</span>
+                  </button>
+                </Link>
+              ) : (
+                <button onClick={() => setLogin(true)} className="px-3 py-2 rounded-md transition-colors duration-200 bg-gray-900 text-white hover:bg-gray-800">
+                  Giriş Yap
+                </button>
+              )}
             </div>
           </div>
         </nav>
